@@ -1,0 +1,66 @@
+---
+interface Props {
+  nombre: string;
+  puesto: string;
+  descripcion: string;
+  imagen: string;
+}
+
+const { nombre, puesto, descripcion, imagen } = Astro.props;
+---
+
+<div class="card">
+  <img src={imagen} alt={nombre} class="card-img" />
+  <div class="card-body">
+    <h2>{nombre}</h2>
+    <h3>{puesto}</h3>
+    <p>{descripcion}</p>
+  </div>
+</div>
+
+<style>
+  .card {
+    width: 280px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    background: white;
+    transition: transform 0.2s;
+    padding: 1rem;
+    text-align: center;
+  }
+
+  .card:hover {
+    transform: translateY(-6px);
+  }
+
+  .card-img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 50%; /* 🔹 Hace la imagen circular */
+    margin: 0 auto 1rem auto; /* Centrada y con espacio debajo */
+    display: block;
+    border: 3px solid #ddd; /* Opcional: borde alrededor */
+  }
+
+  .card-body {
+    padding: 0.5rem;
+  }
+
+  h2 {
+    font-size: 1.3rem;
+    margin: 0.3rem 0;
+  }
+
+  h3 {
+    font-size: 1rem;
+    color: gray;
+    margin: 0.2rem 0;
+  }
+
+  p {
+    font-size: 0.9rem;
+    color: #444;
+  }
+</style>

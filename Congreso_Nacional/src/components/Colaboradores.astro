@@ -1,0 +1,330 @@
+---
+// Colaboradores Section component
+import OptimizedImage from './OptimizedImage.astro';
+
+interface Colaborador {
+  id: string;
+  name: string;
+  image: string;
+}
+
+const colaboradores: Colaborador[] = [
+  {
+    id: "cicy",
+    name: "CICY",
+    image: "assets/logos/cicy.png"
+  },
+  {
+    id: "cinvestav",
+    name: "CINVESTAV",
+    image: "assets/logos/cinvestav.png"
+  },
+  {
+    id: "redibai",
+    name: "REDIBAI",
+    image: "assets/logos/redibai.png"
+  },
+  {
+    id: "regit",
+    name: "REGIT",
+    image: "assets/logos/regit.jpeg"
+  },
+  {
+    id: "secihti",
+    name: "SECIHTI Yucatán",
+    image: "assets/logos/secihti.png"
+  },
+  {
+    id: "unisant",
+    name: "UNISANT Valladolid",
+    image: "assets/logos/unisant.jpg"
+  }
+];
+---
+
+<section id="colaboradores" class="colaboradores">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">Nuestros Colaboradores</h2>
+      <p class="section-subtitle">Alianzas estratégicas que impulsan la excelencia</p>
+    </div>
+    
+    <div class="colaboradores-grid">
+      {colaboradores.map((colaborador, index) => (
+        <div class="colaborador-card magnetic-card" data-aos="zoom-in" data-aos-delay={index * 100}>
+          <div class="colaborador-logo">
+            <OptimizedImage 
+              src={colaborador.image}
+              alt={`${colaborador.name} Logo`}
+              width={200}
+              height={120}
+              class="logo-image"
+            />
+          </div>
+          <h4 class="colaborador-name">{colaborador.name}</h4>
+          <div class="card-glow"></div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .colaboradores {
+    padding: 6rem 0;
+    background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .colaboradores::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 5rem;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .section-title {
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    font-weight: 800;
+    color: var(--gray-900);
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.03em;
+    background: linear-gradient(135deg, var(--gray-900) 0%, var(--secondary-color) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .section-subtitle {
+    font-size: 1.25rem;
+    color: var(--gray-600);
+    line-height: 1.7;
+    font-weight: 400;
+  }
+
+  .colaboradores-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    perspective: 1000px;
+  }
+
+  .colaborador-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 2rem;
+    padding: 3rem 2rem;
+    text-align: center;
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    box-shadow: 
+      0 8px 32px rgba(0, 0, 0, 0.08),
+      0 2px 8px rgba(0, 0, 0, 0.04),
+      inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  .magnetic-card:hover {
+    transform: translateY(-8px) scale(1.02) rotateX(10deg);
+    box-shadow: 
+      0 24px 48px rgba(0, 122, 255, 0.12),
+      0 12px 24px rgba(0, 0, 0, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  }
+
+  .colaborador-logo {
+    height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, rgba(248, 250, 252, 0.8), rgba(241, 245, 249, 0.8));
+    border-radius: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .colaborador-logo::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.2) 50%, transparent 70%);
+    transform: rotate(45deg);
+    transition: all 0.6s ease;
+    opacity: 0;
+  }
+
+  .colaborador-card:hover .colaborador-logo::before {
+    animation: shine 1.5s ease-in-out;
+    opacity: 1;
+  }
+
+  @keyframes shine {
+    0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+    100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+  }
+
+  .colaborador-name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--gray-800);
+    position: relative;
+    z-index: 2;
+    transition: color 0.3s ease;
+  }
+
+  .colaborador-card:hover .colaborador-name {
+    color: var(--primary-color);
+  }
+
+  .card-glow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    opacity: 0;
+    border-radius: 2rem;
+    transition: opacity 0.4s ease;
+    z-index: -1;
+  }
+
+  .colaborador-card:hover .card-glow {
+    opacity: 0.05;
+  }
+
+  /* Floating animation */
+  .colaborador-card {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .colaborador-card:nth-child(2n) {
+    animation-delay: 1s;
+  }
+
+  .colaborador-card:nth-child(3n) {
+    animation-delay: 2s;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .colaborador-card:hover {
+    animation-play-state: paused;
+  }
+
+  /* Ripple effect */
+  .colaborador-card::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: radial-gradient(circle, rgba(0, 122, 255, 0.1) 0%, transparent 70%);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 0.6s ease;
+    pointer-events: none;
+  }
+
+  .colaborador-card:hover::after {
+    width: 300px;
+    height: 300px;
+  }
+
+  /* Staggered entrance animation (AOS optional) */
+  /* Default: visible without AOS */
+  .colaborador-card[data-aos="zoom-in"] {
+    transform: none;
+    opacity: 1;
+  }
+  /* If AOS is present and adds .aos-animate, you still get a subtle scale-in */
+  .aos-animate.colaborador-card[data-aos="zoom-in"] {
+    transform: none;
+    opacity: 1;
+  }
+
+  @media (max-width: 768px) {
+    .colaboradores-grid {
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+    }
+    
+    .section-title {
+      font-size: 2.5rem;
+    }
+
+    .colaborador-card:hover {
+      transform: translateY(-4px) scale(1.02);
+    }
+
+    .colaborador-card {
+      padding: 2.5rem 1.5rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .colaboradores-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .container {
+      padding: 0 1rem;
+    }
+
+    .colaborador-card {
+      padding: 2rem 1.5rem;
+    }
+  }
+
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    .colaborador-card {
+      animation: none;
+    }
+    
+    .colaborador-card:hover {
+      transform: translateY(-4px);
+    }
+  }
+</style>
+
+<script is:inline>
+  // Minimal ES5 hover scaling
+  document.addEventListener('DOMContentLoaded', function(){
+    var cards = document.querySelectorAll('.colaborador-card');
+    Array.prototype.forEach.call(cards, function(card){
+      card.addEventListener('mouseenter', function(){
+        card.style.transform = 'scale(1.02)';
+      });
+      card.addEventListener('mouseleave', function(){
+        card.style.transform = 'scale(1)';
+      });
+    });
+  });
+</script>

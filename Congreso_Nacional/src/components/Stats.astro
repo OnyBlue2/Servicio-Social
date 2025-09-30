@@ -1,0 +1,147 @@
+---
+// Stats Section component
+---
+
+<section class="stats">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <h3 class="stat-number" data-target="5">0</h3>
+        <p class="stat-label">Sedes Internacionales</p>
+      </div>
+      <div class="stat-item">
+        <h3 class="stat-number" data-target="6">0</h3>
+        <p class="stat-label">Instituciones Colaboradoras</p>
+      </div>
+      <div class="stat-item">
+        <h3 class="stat-number" data-target="2025">0</h3>
+        <p class="stat-label">Año de la Innovación</p>
+      </div>
+      <div class="stat-item">
+        <h3 class="stat-number infinity">∞</h3>
+        <p class="stat-label">Posibilidades</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .stats {
+    padding: 4rem 0;
+    background: var(--gray-50);
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+  }
+
+  .stat-item {
+    text-align: center;
+    padding: 2rem;
+  }
+
+  .stat-number {
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--primary-color);
+    margin-bottom: 0.75rem;
+  }
+
+  .stat-label {
+    font-size: 1rem;
+    color: var(--gray-600);
+    font-weight: 500;
+  }
+
+  @media (max-width: 768px) {
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .stats-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  // Counter animation
+  document.addEventListener('DOMContentLoaded', () => {
+    const counters = document.querySelectorAll('.stat-number:not(.infinity)');
+    const observerOptions = {
+      threshold: 0.7,
+      rootMargin: '0px 0px -100px 0px'
+    };
+
+    const counterObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const counter = entry.target as HTMLElement;
+          const target = parseInt(counter.dataset.target || '0');
+          animateCounter(counter, 0, target, 2000);
+          counterObserver.unobserve(counter);
+        }
+      });
+    }, observerOptions);
+
+    counters.forEach(counter => {
+      counterObserver.observe(counter);
+    });
+
+    // Animate infinity symbol
+    const infinitySymbol = document.querySelector('.infinity');
+    if (infinitySymbol) {
+      const infinityObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            animateInfinitySymbol(entry.target as HTMLElement);
+            infinityObserver.unobserve(entry.target);
+          }
+        });
+      }, observerOptions);
+
+      infinityObserver.observe(infinitySymbol);
+    }
+  });
+
+  function animateCounter(element: HTMLElement, start: number, end: number, duration: number) {
+    let startTimestamp: number | null = null;
+    
+    const step = (timestamp: number) => {
+      if (!startTimestamp) startTimestamp = timestamp;
+      const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+      const value = Math.floor(progress * (end - start) + start);
+      
+      element.textContent = value.toLocaleString();
+      
+      if (progress < 1) {
+        requestAnimationFrame(step);
+      }
+    };
+    
+    requestAnimationFrame(step);
+  }
+
+  function animateInfinitySymbol(element: HTMLElement) {
+    let opacity = 0;
+    let scale = 0.5;
+    
+    const animate = () => {
+      opacity += 0.02;
+      scale += 0.01;
+      
+      element.style.opacity = Math.min(opacity, 1).toString();
+      element.style.transform = `scale(${Math.min(scale, 1)})`;
+      
+      if (opacity < 1) {
+        requestAnimationFrame(animate);
+      }
+    };
+    
+    requestAnimationFrame(animate);
+  }
+</script>

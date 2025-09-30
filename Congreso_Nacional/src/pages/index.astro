@@ -1,11 +1,67 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import Navigation from '../components/Navigation.astro';
+import HeroSimple from '../components/HeroSimple.astro';
+import Stats from '../components/Stats.astro';
+import Sedes from '../components/Sedes.astro';
+import Colaboradores from '../components/Colaboradores.astro';
+import CTA from '../components/CTA.astro';
+import Footer from '../components/Footer.astro';
 ---
 
-<Layout>
-	<Welcome />
+<Layout title="Congreso 2025 - Innovación e Investigación">
+  <Navigation />
+  <HeroSimple />
+  <Stats />
+  <Sedes />
+  <Colaboradores />
+  <CTA />
+  <Footer />
 </Layout>
+
+
+
+<style is:global>
+  /* Basic global styles */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    line-height: 1.6;
+    color: #333;
+  }
+
+  :root {
+    --primary-color: #667eea;
+    --secondary-color: #764ba2;
+    --accent-color: #f093fb;
+    --text-color: #333;
+    --background-color: #ffffff;
+  }
+
+  /* Smooth transitions */
+  * {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  /* Focus styles for accessibility */
+  *:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* Selection styles */
+  ::selection {
+    background: var(--primary-color);
+    color: white;
+  }
+</style>

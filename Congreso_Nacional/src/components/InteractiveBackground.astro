@@ -1,0 +1,355 @@
+---
+// Interactive background with advanced visual effects
+---
+
+<div class="interactive-background">
+  <!-- Mesh gradient background -->
+  <div class="mesh-gradient">
+    <div class="gradient-orb orb-1"></div>
+    <div class="gradient-orb orb-2"></div>
+    <div class="gradient-orb orb-3"></div>
+    <div class="gradient-orb orb-4"></div>
+    <div class="gradient-orb orb-5"></div>
+  </div>
+
+  <!-- Geometric shapes -->
+  <div class="geometric-shapes">
+    <div class="shape shape-triangle"></div>
+    <div class="shape shape-circle"></div>
+    <div class="shape shape-square"></div>
+    <div class="shape shape-diamond"></div>
+  </div>
+
+  <!-- Interactive cursor trail -->
+  <div class="cursor-trail" id="cursor-trail"></div>
+</div>
+
+<script>
+  // Interactive cursor effects
+  const trail = document.getElementById('cursor-trail');
+  const shapes = document.querySelectorAll('.shape');
+  
+  let mouseX = 0;
+  let mouseY = 0;
+  let trailElements = [];
+
+  // Create cursor trail
+  function createTrailElement() {
+    const element = document.createElement('div');
+    element.className = 'trail-dot';
+    trail?.appendChild(element);
+    return element;
+  }
+
+  // Initialize trail elements
+  for (let i = 0; i < 15; i++) {
+    trailElements.push(createTrailElement());
+  }
+
+  // Mouse move handler
+  document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    
+    // Update trail
+    trailElements.forEach((element, index) => {
+      const delay = index * 0.1;
+      const scale = (15 - index) / 15;
+      
+      setTimeout(() => {
+        element.style.left = mouseX + 'px';
+        element.style.top = mouseY + 'px';
+        element.style.transform = `scale(${scale})`;
+        element.style.opacity = scale * 0.6;
+      }, delay * 50);
+    });
+    
+    // Magnetic effect on shapes
+    shapes.forEach(shape => {
+      const rect = shape.getBoundingClientRect();
+      const shapeCenterX = rect.left + rect.width / 2;
+      const shapeCenterY = rect.top + rect.height / 2;
+      
+      const distance = Math.sqrt(
+        Math.pow(mouseX - shapeCenterX, 2) + Math.pow(mouseY - shapeCenterY, 2)
+      );
+      
+      if (distance < 150) {
+        const attraction = (150 - distance) / 150;
+        const moveX = (mouseX - shapeCenterX) * attraction * 0.2;
+        const moveY = (mouseY - shapeCenterY) * attraction * 0.2;
+        
+        shape.style.transform = `translate(${moveX}px, ${moveY}px) rotate(${attraction * 30}deg)`;
+      } else {
+        shape.style.transform = 'translate(0px, 0px) rotate(0deg)';
+      }
+    });
+  });
+
+  // Parallax effect on scroll
+  window.addEventListener('scroll', () => {
+    const scrolled = window.pageYOffset;
+    const rate = scrolled * -0.5;
+    
+    document.querySelector('.mesh-gradient').style.transform = `translateY(${rate}px)`;
+    
+    // Move shapes at different rates
+    shapes.forEach((shape, index) => {
+      const shapeRate = scrolled * -0.3 * (index + 1);
+      const currentTransform = shape.style.transform;
+      const translateMatch = currentTransform.match(/translate\(([^)]+)\)/);
+      const rotateMatch = currentTransform.match(/rotate\(([^)]+)\)/);
+      
+      const translatePart = translateMatch ? translateMatch[1] : '0px, 0px';
+      const rotatePart = rotateMatch ? rotateMatch[1] : '0deg';
+      
+      shape.style.transform = `translate(${translatePart}) rotate(${rotatePart}) translateY(${shapeRate}px)`;
+    });
+  });
+
+  // Add click ripple effect
+  document.addEventListener('click', (e) => {
+    const ripple = document.createElement('div');
+    ripple.className = 'click-ripple';
+    ripple.style.left = e.clientX + 'px';
+    ripple.style.top = e.clientY + 'px';
+    
+    document.body.appendChild(ripple);
+    
+    setTimeout(() => {
+      ripple.remove();
+    }, 1000);
+  });
+</script>
+
+<style>
+  .interactive-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+    overflow: hidden;
+  }
+
+  /* Mesh gradient background */
+  .mesh-gradient {
+    position: absolute;
+    width: 120%;
+    height: 120%;
+    top: -10%;
+    left: -10%;
+  }
+
+  .gradient-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.7;
+    animation: float-orbs 20s ease-in-out infinite;
+  }
+
+  .orb-1 {
+    width: 400px;
+    height: 400px;
+    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+    top: 10%;
+    left: 10%;
+    animation-delay: 0s;
+  }
+
+  .orb-2 {
+    width: 300px;
+    height: 300px;
+    background: linear-gradient(135deg, #4834d4, #686de0);
+    top: 60%;
+    right: 15%;
+    animation-delay: -5s;
+  }
+
+  .orb-3 {
+    width: 350px;
+    height: 350px;
+    background: linear-gradient(135deg, #00d2d3, #54a0ff);
+    bottom: 20%;
+    left: 20%;
+    animation-delay: -10s;
+  }
+
+  .orb-4 {
+    width: 250px;
+    height: 250px;
+    background: linear-gradient(135deg, #5f27cd, #a55eea);
+    top: 30%;
+    right: 40%;
+    animation-delay: -15s;
+  }
+
+  .orb-5 {
+    width: 200px;
+    height: 200px;
+    background: linear-gradient(135deg, #00d8d6, #01a3a4);
+    bottom: 40%;
+    right: 10%;
+    animation-delay: -7s;
+  }
+
+  @keyframes float-orbs {
+    0%, 100% {
+      transform: translate(0px, 0px) scale(1);
+    }
+    25% {
+      transform: translate(30px, -30px) scale(1.1);
+    }
+    50% {
+      transform: translate(-20px, 20px) scale(0.9);
+    }
+    75% {
+      transform: translate(40px, 10px) scale(1.05);
+    }
+  }
+
+  /* Geometric shapes */
+  .geometric-shapes {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  .shape {
+    position: absolute;
+    transition: transform 0.3s ease;
+    opacity: 0.1;
+    filter: blur(1px);
+  }
+
+  .shape-triangle {
+    width: 0;
+    height: 0;
+    border-left: 25px solid transparent;
+    border-right: 25px solid transparent;
+    border-bottom: 50px solid #3742fa;
+    top: 20%;
+    left: 15%;
+    animation: rotate-shape 15s linear infinite;
+  }
+
+  .shape-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, #ff9ff3, #f368e0);
+    top: 70%;
+    right: 20%;
+    animation: pulse-shape 8s ease-in-out infinite;
+  }
+
+  .shape-square {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(45deg, #54a0ff, #2e86de);
+    top: 40%;
+    left: 70%;
+    animation: rotate-shape 12s linear infinite reverse;
+  }
+
+  .shape-diamond {
+    width: 30px;
+    height: 30px;
+    background: linear-gradient(45deg, #5f27cd, #341f97);
+    transform: rotate(45deg);
+    bottom: 30%;
+    left: 40%;
+    animation: float-shape 10s ease-in-out infinite;
+  }
+
+  @keyframes rotate-shape {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes pulse-shape {
+    0%, 100% { transform: scale(1); opacity: 0.1; }
+    50% { transform: scale(1.3); opacity: 0.3; }
+  }
+
+  @keyframes float-shape {
+    0%, 100% { transform: rotate(45deg) translateY(0px); }
+    50% { transform: rotate(45deg) translateY(-20px); }
+  }
+
+  /* Cursor trail */
+  .cursor-trail {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  .trail-dot {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0));
+    border-radius: 50%;
+    pointer-events: none;
+    transition: transform 0.1s ease, opacity 0.2s ease;
+  }
+
+  /* Click ripple effect */
+  :global(.click-ripple) {
+    position: fixed;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.3), transparent);
+    transform: translate(-50%, -50%) scale(0);
+    animation: ripple-expand 1s ease-out;
+    pointer-events: none;
+    z-index: 9998;
+  }
+
+  @keyframes ripple-expand {
+    to {
+      transform: translate(-50%, -50%) scale(3);
+      opacity: 0;
+    }
+  }
+
+  /* Performance optimizations */
+  @media (max-width: 768px) {
+    .gradient-orb {
+      filter: blur(50px);
+    }
+    
+    .orb-1, .orb-2, .orb-3 {
+      width: 200px;
+      height: 200px;
+    }
+    
+    .orb-4, .orb-5 {
+      display: none;
+    }
+    
+    .shape {
+      opacity: 0.05;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .gradient-orb,
+    .shape {
+      animation: none;
+    }
+    
+    .trail-dot {
+      display: none;
+    }
+  }
+</style>

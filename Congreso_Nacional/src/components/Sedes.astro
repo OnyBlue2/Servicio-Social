@@ -1,0 +1,361 @@
+---
+// Sedes Section component
+import OptimizedImage from './OptimizedImage.astro';
+
+interface Sede {
+  id: string;
+  title: string;
+  location: string;
+  description: string;
+  image: string;
+  tags: string[];
+}
+
+const sedes: Sede[] = [
+  {
+    id: "itsva",
+    title: "ITSVA",
+    location: "Instituto Tecnológico Superior de Villa Alta",
+    description: "Centro de excelencia en educación tecnológica e innovación.",
+    image: "assets/logos/itsva.png",
+    tags: ["Tecnología", "Innovación"]
+  },
+  {
+    id: "its-calkini",
+    title: "ITS Calkini",
+    location: "TecNM Campus Calkini",
+    description: "Formando profesionales con visión global y compromiso social.",
+    image: "assets/logos/its-calkini.png",
+    tags: ["TecNM", "Excelencia"]
+  },
+  {
+    id: "its-fcp",
+    title: "ITS FCP",
+    location: "Instituto Tecnológico Superior",
+    description: "Liderazgo en formación técnica y desarrollo profesional.",
+    image: "assets/logos/its-fcp.png",
+    tags: ["Liderazgo", "Calidad"]
+  },
+  {
+    id: "etitc",
+    title: "ETITC",
+    location: "Colombia",
+    description: "Escuela Tecnológica de vanguardia en educación superior.",
+    image: "assets/logos/etitc.png",
+    tags: ["Internacional", "Vanguardia"]
+  },
+  {
+    id: "san-marcos",
+    title: "Universidad San Marcos",
+    location: "Costa Rica",
+    description: "Excelencia académica con proyección internacional.",
+    image: "assets/logos/san-marcos.png",
+    tags: ["Global", "Prestigio"]
+  }
+];
+---
+
+<section id="sedes" class="sedes">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">Nuestras Sedes</h2>
+      <p class="section-subtitle">Conectando el mundo a través de la excelencia académica</p>
+    </div>
+    
+    <div class="sedes-grid">
+      {sedes.map((sede, index) => (
+        <div class="sede-card glassmorphism">
+          <div class="sede-image">
+            <OptimizedImage 
+              src={sede.image}
+              alt={`${sede.title} Logo`}
+              width={300}
+              height={200}
+              class="sede-logo"
+            />
+          </div>
+          <div class="sede-content">
+            <h3 class="sede-title">{sede.title}</h3>
+            <p class="sede-location">{sede.location}</p>
+            <p class="sede-description">{sede.description}</p>
+            <div class="sede-features">
+              {sede.tags.map(tag => (
+                <span class="feature-tag">{tag}</span>
+              ))}
+            </div>
+            <div class="sede-accent"></div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .sedes {
+    padding: 6rem 0;
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    position: relative;
+  }
+
+  .sedes::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0, 122, 255, 0.3), transparent);
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 5rem;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .section-title {
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    font-weight: 800;
+    color: var(--gray-900);
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.03em;
+    background: linear-gradient(135deg, var(--gray-900) 0%, var(--primary-color) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .section-subtitle {
+    font-size: 1.25rem;
+    color: var(--gray-600);
+    line-height: 1.7;
+    font-weight: 400;
+  }
+
+  .sedes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    gap: 2.5rem;
+    perspective: 1000px;
+  }
+
+  .sede-card {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 2rem;
+    overflow: hidden;
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    transform-style: preserve-3d;
+  }
+
+  .glassmorphism {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 
+      0 8px 32px rgba(0, 0, 0, 0.1),
+      0 2px 8px rgba(0, 0, 0, 0.05),
+      inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  }
+
+  .sede-card:hover {
+    transform: translateY(-12px) rotateX(5deg) rotateY(2deg);
+    box-shadow: 
+      0 32px 64px rgba(0, 122, 255, 0.15),
+      0 16px 32px rgba(0, 0, 0, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  }
+
+  .sede-image {
+    height: 220px;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .sede-image::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+  }
+
+  .sede-card:hover .sede-image::before {
+    transform: translateX(100%);
+  }
+
+  .sede-content {
+    padding: 2.5rem;
+    position: relative;
+  }
+
+  .sede-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--gray-900);
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.01em;
+  }
+
+  .sede-location {
+    font-size: 0.9rem;
+    color: var(--primary-color);
+    font-weight: 600;
+    margin-bottom: 1.25rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .sede-description {
+    color: var(--gray-600);
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    font-size: 1rem;
+  }
+
+  .sede-features {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+
+  .feature-tag {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .feature-tag::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s ease;
+  }
+
+  .feature-tag:hover::before {
+    left: 100%;
+  }
+
+  .sede-accent {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+
+  .sede-card:hover .sede-accent {
+    transform: scaleX(1);
+  }
+
+  /* Micro-interactions */
+  .sede-card::after {
+    content: '';
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--success-color);
+    opacity: 0;
+    transform: scale(0);
+    transition: all 0.3s ease;
+  }
+
+  .sede-card:hover::after {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  @media (max-width: 768px) {
+    .sedes-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    
+    .section-title {
+      font-size: 2.5rem;
+    }
+
+    .sede-card:hover {
+      transform: translateY(-8px);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .container {
+      padding: 0 1rem;
+    }
+
+    .sede-content {
+      padding: 2rem;
+    }
+  }
+
+  /* Parallax effect for the section */
+  @media (prefers-reduced-motion: no-preference) {
+    .sede-card {
+      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+  }
+</style>
+
+<style is:global>
+  /* Ensure visibility if AOS CSS is loaded but JS not initialized */
+  .sede-card[data-aos] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .sede-card[data-aos].aos-animate {
+    opacity: 1 !important;
+  }
+</style>
+
+<script is:inline>
+  // Minimal, ES5-safe hover effect
+  document.addEventListener('DOMContentLoaded', function() {
+    var sedeCards = document.querySelectorAll('.sede-card');
+    Array.prototype.forEach.call(sedeCards, function(card){
+      card.addEventListener('mouseenter', function(){
+        card.style.transform = 'translateY(-8px)';
+      });
+      card.addEventListener('mouseleave', function(){
+        card.style.transform = 'translateY(0)';
+      });
+    });
+  });
+</script>
